@@ -22,4 +22,5 @@ HistorIA combina **aprendizaje, juego y tecnología** para acercar la historia a
 
 
 ---
-👨‍💻 Autor: [Ana I Cantón González](www.linkedin.com/in/ana-canton-gonzález)
+👨‍💻 Autor: [Ana I Cantón González] (https://www.linkedin.com/in/ana-canton-gonzález)
+
