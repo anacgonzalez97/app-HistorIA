@@ -1,0 +1,155 @@
+#:kivy 2.3.1
+#:import dp kivy.metrics.dp
+
+<OlvidoScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    Image:
+        source: 'imagen/fondo.png'
+        allow_stretch: True
+        keep_ratio: False
+        size: root.size
+        pos: root.pos
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [dp(20), dp(20), dp(20), dp(20)]
+        spacing: dp(10)
+        size_hint: 0.9, 0.9
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        Label:
+            id: forgot_password_title
+            text: 'Recuperar Contraseña'
+            font_size: '22sp'
+            bold: True
+            color: 1, 1, 1, 1
+            size_hint: 1, 0.08
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: dp(70)
+            spacing: dp(3)
+
+            Label:
+                id: username_hint
+                text: 'Nombre de usuario'
+                size_hint_y: None
+                height: dp(20)
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '14sp'
+
+            TextInput:
+                id: username
+                hint_text: '...'
+                size_hint_y: None
+                height: dp(35)
+                multiline: False
+                background_color: 0.95, 0.95, 0.95, 0.8
+                foreground_color: 0, 0, 0, 1
+                padding_y: [dp(8), dp(8)]
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: dp(70)
+            spacing: dp(3)
+
+            Label:
+                id: birthday_date
+                text: 'Fecha de nacimiento'
+                size_hint_y: None
+                height: dp(20)
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '14sp'
+
+            TextInput:
+                id: birthday_date_hint
+                hint_text: 'dd/mm/aaaa'
+                size_hint_y: None
+                height: dp(35)
+                multiline: False
+                background_color: 0.95, 0.95, 0.95, 0.8
+                foreground_color: 0, 0, 0, 1
+                padding_y: [dp(8), dp(8)]
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: dp(70)
+            spacing: dp(3)
+
+            Label:
+                id: new_password
+                text: 'Nueva contraseña'
+                size_hint_y: None
+                height: dp(20)
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '14sp'
+
+            TextInput:
+                id: new_password_input
+                hint_text: '***'
+                size_hint_y: None
+                height: dp(35)
+                multiline: False
+                password: True
+                background_color: 0.95, 0.95, 0.95, 0.8
+                foreground_color: 0, 0, 0, 1
+                padding_y: [dp(8), dp(8)]
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: dp(70)
+            spacing: dp(3)
+
+            Label:
+                id: confirm_password
+                text: 'Confirmar contraseña'
+                size_hint_y: None
+                height: dp(20)
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '14sp'
+
+            TextInput:
+                id: confirm_password_input
+                hint_text: '***'
+                size_hint_y: None
+                height: dp(35)
+                multiline: False
+                password: True
+                background_color: 0.95, 0.95, 0.95, 0.8
+                foreground_color: 0, 0, 0, 1
+                padding_y: [dp(8), dp(8)]
+
+        Button:
+            id: update_password_button
+            text: 'Actualizar Contraseña'
+            size_hint: 1, None
+            height: dp(42)
+            background_color: 0.85, 0.90, 0.95, 0.5
+            color: 1, 1, 1, 1
+            bold: True
+            font_size: '16sp'
+            on_release: root.recover_password()
+
+        Button:
+            id: back_to_login_button
+            text: 'Volver al inicio'
+            size_hint: 1, None
+            height: dp(42)
+            background_color: 1, 1, 1, 0
+            color: 1, 1, 1, 1
+            font_size: '16sp'
+            on_press: root.go_to_login()

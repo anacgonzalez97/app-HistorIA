@@ -1,0 +1,70 @@
+#:kivy 2.3.1
+#:import dp kivy.metrics.dp
+
+<BookStyleLabel>:
+    text_size: self.width, None
+    size_hint_y: None
+    height: self.texture_size[1]
+    valign: 'top'
+    halign: 'left'
+    markup: True
+    padding: dp(15), dp(10)
+    color: 0, 0, 0, 1
+
+<BackgroundWidget>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            texture: root.background_texture
+            pos: self.pos
+            size: self.size
+
+<NoticiaCard>:
+    orientation: 'vertical'
+    size_hint_y: None
+    height: self.minimum_height
+    padding: dp(10)
+    spacing: dp(5)
+    canvas.before:
+        Color:
+            rgba: 0.95, 0.95, 0.95, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(10),]
+
+<NoticiasScreen>:
+    FloatLayout:
+        BoxLayout:
+            orientation: 'vertical'
+            padding: dp(10)
+            spacing: dp(10)
+
+            # Título simplificado
+            Label:
+                text: root.get_title_text()
+                size_hint_y: None
+                height: dp(50)
+                font_size: '22sp'
+                bold: True
+                color: (0, 0, 0, 1)
+
+            ScrollView:
+                size_hint: 1, 1
+                do_scroll_x: False
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(10)
+                    padding: [dp(10), dp(10), dp(10), dp(5)]
+                    id: results_container
+
+        Button:
+            background_normal: 'imagen/flecha.png'
+            size_hint: None, None
+            size: dp(45), dp(45)
+            pos_hint: {'x': 0.04, 'top': 0.96}
+            border: 0, 0, 0, 0
+            on_release: root.volver_al_menu()

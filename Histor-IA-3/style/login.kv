@@ -1,0 +1,146 @@
+#:kivy 2.3.1
+#:import dp kivy.metrics.dp
+
+<LoginScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            source: 'imagen/fondo.png'
+            pos: self.pos
+            size: self.size
+    
+  ###Boton nuevo idioma  
+
+    FloatLayout:
+        size: root.size
+
+        Button:
+            size_hint: None, None
+            size: dp(45), dp(45)
+            pos_hint: {'right': 0.96, 'top': 0.96}
+            border: 0, 0, 0, 0
+            background_normal: 'imagen/idioma.png'
+            background_down: 'imagen/idioma.png'
+            background_color: 1, 1, 1, 1
+            on_release: root.manager.current = 'idiomas'
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: [dp(20), dp(20), dp(20), dp(20)]  # Reducido el padding general
+        spacing: dp(10)
+        size_hint: 0.9, 0.9  # Aumentado para aprovechar más espacio
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        # Contenedor de imágenes (más compacto)
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, 0.25  # Reducido el espacio para imágenes
+            spacing: dp(5)  # Menor separación entre imágenes
+            padding: [0, 0, 0, dp(10)]  # Menor espacio inferior
+
+            Image:
+                source: 'imagen/logo.png'
+                size_hint: None, None
+                size: dp(120), dp(120)  # Tamaño más compacto
+                pos_hint: {'center_x': 0.5}
+
+            Image:
+                source: 'imagen/letras.png'
+                size_hint: None, None
+                size: dp(180), dp(40)  # Tamaño más compacto
+                pos_hint: {'center_x': 0.5}
+
+        # Etiqueta de bienvenida más compacta
+        Label:
+            id: label_welcome
+            text: 'Bienvenido'
+            size_hint: 1, 0.08
+            font_size: '22sp'  # Tamaño ligeramente reducido
+            bold: True
+            color: 1, 1, 1, 1
+
+        # Campos de entrada más compactos
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: dp(70)  # Altura reducida
+            spacing: dp(3)  # Menor separación
+
+            Label:
+                id: label_username      
+                text: 'Introduce el usuario'
+                size_hint_y: None
+                height: dp(20)  # Altura reducida
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '14sp'
+
+            TextInput:
+                id: usuario_input
+                hint_text: '...'
+                size_hint_y: None
+                height: dp(35)  # Altura reducida
+                multiline: False
+                background_color: 0.95, 0.95, 0.95, 0.8
+                foreground_color: 0, 0, 0, 1
+                padding_y: [dp(8), dp(8)]  # Padding reducido
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 1, None
+            height: dp(70)  # Altura reducida
+            spacing: dp(3)  # Menor separación
+
+            Label:
+                id: label_password
+                text: 'Introduce la contraseña'
+                size_hint_y: None
+                height: dp(20)  # Altura reducida
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '14sp'
+
+            TextInput:
+                id: clave_input
+                hint_text: '***'
+                size_hint_y: None
+                height: dp(35)  # Altura reducida
+                multiline: False
+                password: True
+                background_color: 0.95, 0.95, 0.95, 0.8
+                foreground_color: 0, 0, 0, 1
+                padding_y: [dp(8), dp(8)]  # Padding reducido
+
+        # Botón "¿Olvidaste tu contraseña?" más compacto
+        Button:
+            id: button_forgot
+            text: '¿Has olvidado tu contraseña?'
+            size_hint: None, None
+            size: dp(180), dp(22)  # Tamaño reducido
+            font_size: '12sp'  # Texto más pequeño
+            background_color: 0, 0, 0, 0
+            color: 1, 1, 1, 1
+            bold: True
+            on_release: root.go_to_olvido()
+
+        # Botones principales más compactos
+        Button:
+            id: button_login
+            text: 'Iniciar Sesión'
+            size_hint: 1, None
+            height: dp(42)  # Altura reducida
+            background_color: 0.85, 0.90, 0.95, 0.5
+            color: 1, 1, 1, 1
+            bold: True
+            font_size: '16sp'  # Texto ligeramente más pequeño
+            on_release: root.login()
+
+        Button:
+            id: button_register
+            text: 'Registrarse'
+            size_hint: 1, None
+            height: dp(42)  # Altura reducida
+            background_color: 1, 1, 1, 0
+            color: 1, 1, 1, 1
+            on_release: root.go_to_registro()

@@ -1,0 +1,73 @@
+#:kivy 2.3.1
+#:import dp kivy.metrics.dp
+
+<RetoDiarioScreen>:
+
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            source: 'imagen/fondo.png'
+            pos: self.pos
+            size: self.size
+            
+    main_layout: main_layout
+    title_label: title_label
+    streak_label: streak_label
+    question_container: question_container
+    
+    FloatLayout:
+        BoxLayout:
+            id: main_layout
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(10)
+            
+            Label:
+                id: title_label
+                text: "Reto Diario"
+                size_hint: (1, None)
+                height: dp(50)
+                font_size: '24sp'
+                bold: True
+                color: 0, 0, 0, 1
+            
+            Label:
+                id: streak_label
+                text: f"Racha actual: {root.streak} días"
+                size_hint: (1, None)
+                height: dp(30)
+                font_size: '16sp'
+            
+            BoxLayout:
+                id: question_container
+                orientation: 'vertical'
+                size_hint: (1, 1)
+                spacing: dp(15)
+            
+            Button:
+                id: start_button
+                text: "Comenzar Reto Diario"
+                size_hint: 1, None
+                height: dp(42)  # Altura reducida
+                background_color: 0.85, 0.90, 0.95, 0.5
+                color: 1, 1, 1, 1
+                bold: True
+                font_size: '16sp'  # Texto ligeramente más pequeño
+                on_press: root.on_start_click()
+        
+        Button:
+            background_normal: 'imagen/ranking.png'
+            size_hint: None, None
+            size: dp(45), dp(45)
+            pos_hint: {'right': 0.96, 'top': 0.96}
+            border: 0, 0, 0, 0
+            on_release: root.show_ranking_popup()
+        
+        Button:
+            background_normal: 'imagen/flecha.png'
+            size_hint: None, None
+            size: dp(45), dp(45)
+            pos_hint: {'x': 0.04, 'top': 0.96}
+            border: 0, 0, 0, 0
+            on_release: root.go_to_menu()

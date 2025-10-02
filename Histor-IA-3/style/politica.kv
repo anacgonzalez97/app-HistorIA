@@ -1,0 +1,50 @@
+#:kivy 2.3.1
+#:import dp kivy.metrics.dp
+
+<PoliticaScreen>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            source: 'imagen/fondo.png'
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        Button:
+            background_normal: 'imagen/flecha.png'
+            size_hint: None, None
+            size: dp(45), dp(45)
+            pos_hint: {'x': 0.04, 'top': 0.96}
+            border: 0, 0, 0, 0
+            on_release: root.go_to_menu()
+
+        ScrollView:
+            size_hint: 1, 0.88
+            pos_hint: {"center_x": 0.5, "y": 0.0}
+            do_scroll_x: False
+            do_scroll_y: True
+
+            BoxLayout:
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+                padding: dp(20), dp(10)
+                spacing: dp(10)
+
+                Label:
+                    id: politica_label
+                    text: ""
+                    markup: True
+                    font_size: '16sp'
+                    color: 1, 1, 1, 1
+                    text_size: self.width, None
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    halign: "left"
+                    valign: "top"

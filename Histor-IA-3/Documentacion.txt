@@ -1,0 +1,336 @@
+DOCUMENTACIÓN TÉCNICA COMPLETA - APLICACIÓN MULTIPLATAFORMA DE CUESTIONARIOS CON IA
+
+Esta documentación proporciona una descripción detallada de los componentes y funcionalidades de una aplicación desarrollada con Python y Kivy, que combina una experiencia de usuario interactiva con generación de contenido mediante IA (DeepSeek a través de OpenRouter), consultas a una base de datos en Supabase mediante una API REST, y almacenamiento local mediante SQLite.
+
+===============================================================================
+1. Tecnologías Utilizadas
+===============================================================================
+
+Tecnología       | Descripción
+----------------|-------------------------------------------------------------
+Python           | Lenguaje de programación principal del proyecto.
+Kivy             | Framework para interfaces gráficas multiplataforma.
+OpenRouter       | Plataforma para conectar con modelos de IA como DeepSeek.
+DeepSeek         | Modelo de lenguaje utilizado para generar preguntas.
+Supabase         | Backend como servicio para base de datos, autenticación y API REST.
+SQLite           | Base de datos local utilizada en quizzes.
+JSON             | Formato estándar de datos para intercambios entre cliente y servidor.
+
+===============================================================================
+2. Estructura General del Proyecto
+===============================================================================
+
+.
+├── reto.py            # Generación de preguntas con IA (DeepSeek)
+├── quiz.py            # Cuestionario geográfico multilingüe con SQLite
+├── consulta.py        # Consulta de preguntas anteriores al backend
+├── login.py           # Inicio de sesión
+├── registro.py        # Registro de nuevos usuarios
+├── olvido.py          # Recuperación de contraseña
+├── menu.py            # Pantalla de menú principal
+├── new.py             # Generación de noticias automáticas
+├── idiomas.py         # Pantalla de selección de idioma
+├── translations.py    # Diccionario de traducciones multilenguaje
+├── database.py        # Gestión de usuarios con API REST a Supabase
+├── politica.py        # Pantalla de política de privacidad
+
+===============================================================================
+3. Traducción Dinámica Multilenguaje
+===============================================================================
+
+Archivos implicados:
+- idiomas.py
+- translations.py
+
+Funcionamiento:
+- El idioma se selecciona desde la pantalla idiomas.py.
+- El idioma se guarda en el objeto principal de la app (App.language).
+- Cada pantalla llama a translate("CLAVE") para mostrar los textos correctos.
+- Todas las etiquetas, botones, mensajes y textos son traducidos en tiempo real según el idioma elegido.
+
+===============================================================================
+4. consulta.py - Consulta de Preguntas Anteriores
+===============================================================================
+
+Propósito:
+Permite al usuario consultar preguntas previamente generadas mediante una llamada POST a una API REST.
+
+Funcionamiento:
+- Envía datos como categoría o año al endpoint /consulta.
+- La respuesta del servidor es una pregunta en formato JSON.
+- Se renderiza en pantalla con traducciones según idioma activo.
+
+Detalles técnicos:
+- Librería requests para la conexión HTTP.
+- Manejo de errores con try-except.
+- Uso de ScrollView y Labels para presentar el contenido.
+
+===============================================================================
+5. reto.py - Generación Diaria de Preguntas con IA (DeepSeek)
+===============================================================================
+
+Propósito:
+---------
+El archivo `reto.py` gestiona la pantalla de "reto diario", donde los usuarios reciben una nueva pregunta generada por IA cada día, con el objetivo de mantener una racha de participación. Utiliza el modelo DeepSeek a través de OpenRouter para generar preguntas adaptadas.
+
+Funcionamiento General:
+-----------------------
+- Al iniciarse la pantalla, se verifica si ya se ha completado el reto del día.
+- Si no, se realiza una llamada a la API de IA para generar una pregunta personalizada.
+- La pregunta generada se guarda en la base de datos (Supabase) mediante una petición HTTP.
+- Se actualiza el contador de racha del usuario localmente.
+- Se muestra la pregunta con posibles respuestas al usuario.
+
+Detalles Técnicos:
+------------------
+
+ Lógica de Racha:
+- La racha se guarda en un almacenamiento local (probablemente archivo o JSON).
+- Se comprueba si la fecha actual ya fue usada para generar un reto.
+- Si es así, se bloquea la generación hasta el siguiente día.
+
+ Generación con IA (DeepSeek):
+- El código utiliza `deepseek/deepseek-r1:free` como modelo a través de `https://openrouter.ai`.
+- La llamada se realiza mediante el cliente configurado (`deepseek_client`) con autenticación.
+
+Ejemplo de llamada al modelo:
+```python
+response = deepseek_client.chat.completions.create(
+    model="deepseek/deepseek-r1:free",
+    messages=[
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+)
+
+===============================================================================
+6. `quiz.py` - Cuestionario Multilingüe Generado por IA (DeepSeek) con SQLite
+===============================================================================
+
+## Propósito
+
+El archivo `quiz.py` implementa una pantalla tipo test que presenta al usuario un **cuestionario de 10 preguntas** generadas dinámicamente por IA. El foco está en preguntas de tipo geográfico (sobre países o continentes) y los resultados se almacenan en una base de datos local SQLite. La interfaz se adapta al idioma seleccionado por el usuario.
+
+---
+
+## Funcionamiento General
+
+1. El usuario elige un continente o país específico.
+2. Se genera un `prompt` y se hace una llamada al modelo IA DeepSeek.
+3. Se recibe un JSON estructurado con 10 preguntas, cada una con:
+   - `pregunta`
+   - `respuestas`: lista de 4 opciones
+   - `respuesta_correcta`
+4. Las preguntas se muestran una por una al usuario.
+5. Se calcula y muestra la puntuación final.
+6. El resultado se guarda en una base de datos local `SQLite`.
+
+---
+
+## Generación con IA (DeepSeek vía OpenRouter)
+
+El modelo usado es:
+
+```
+deepseek/deepseek-r1:free
+```
+
+### Llamada al modelo
+
+```python
+response = client.chat.completions.create(
+    model="deepseek/deepseek-r1:free",
+    messages=[
+        {
+            "role": "user",
+            "content": prompt
+        }
+    ]
+)
+```
+
+### Estructura del `prompt`
+
+El contenido del prompt indica claramente al modelo que debe devolver **un JSON válido** con 10 preguntas geográficas sobre un país o continente específico, incluyendo:
+
+- `"pregunta"`: enunciado de la pregunta.
+- `"respuestas"`: lista con 4 opciones.
+- `"respuesta_correcta"`: valor o índice correcto.
+
+---
+
+## Almacenamiento en SQLite
+
+Los resultados se guardan de forma local usando una base de datos SQLite (`quiz_users.db`).
+
+### Tabla de resultados:
+
+```sql
+CREATE TABLE IF NOT EXISTS resultados (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usuario TEXT,
+    pais TEXT,
+    puntuacion INTEGER,
+    fecha TEXT,
+    idioma TEXT
+);
+```
+
+### Ejemplo de inserción:
+
+```python
+cursor.execute(
+    "INSERT INTO resultados (usuario, puntuacion, pais, fecha, idioma) VALUES (?, ?, ?, ?, ?)",
+    (usuario, puntuacion, pais, fecha_actual, idioma)
+)
+```
+
+---
+
+## Traducción Dinámica
+
+Toda la interfaz y el contenido del test (título, botones, feedback visual) se adapta al idioma mediante:
+
+- `App.language` (idioma activo)
+- Función `translate("clave")` desde `translations.py`
+
+---
+
+## Flujo del Test
+
+1. Se muestra la primera pregunta con las opciones.
+2. El usuario selecciona una opción:
+   - Si es correcta, se suma un punto.
+   - Se avanza a la siguiente pregunta.
+3. Tras responder las 10 preguntas:
+   - Se calcula el resultado final.
+   - Se muestra un resumen.
+   - Se guarda el resultado en SQLite.
+
+---
+
+## Visualización Final
+
+Al completar el test, el usuario verá:
+- Su puntuación total.
+- Detalle de aciertos y errores.
+- Tabla de resultados anteriores (historial desde SQLite).
+
+---
+
+## Ventajas y Consideraciones Técnicas
+
+- **Uso offline** gracias a SQLite.
+- Interfaz 100% traducida y adaptable.
+- Generación dinámica y única en cada ejecución.
+- Fomenta el aprendizaje por repetición y variedad de preguntas.
+- Validar siempre el JSON generado por IA antes de usarlo.
+- Escalable a otros temas (historia, ciencia, etc.) cambiando el prompt.
+
+===============================================================================
+7. `new.py` - Generación de Noticias Automáticas
+===============================================================================
+
+## Propósito
+
+El archivo `new.py` permite mostrar noticias generadas por una fuente automatizada. Puede utilizar una API externa o integrarse en el futuro con un modelo de IA. Presenta información en una interfaz limpia, con textos traducidos y estilo visual enriquecido.
+
+## Funcionalidades
+
+- Consulta de noticias mediante API externa (en futuras versiones puede integrarse OpenAI o DeepSeek).
+- Traducción dinámica del contenido mostrado.
+- Renderización de títulos, descripciones y fechas en una lista interactiva.
+- Posible uso de ScrollView y botones para navegación.
+
+---
+
+===============================================================================
+8. `menu.py` - Pantalla de Menú Principal
+===============================================================================
+
+## Propósito
+
+Este módulo representa la pantalla central de navegación tras el login. Ofrece botones para acceder a las secciones clave de la app, como el reto diario, el cuestionario, la consulta, etc.
+
+## Funcionalidades
+
+- Botones para navegar a `reto.py`, `quiz.py`, `consulta.py`, `new.py`, `politica.py`, etc.
+- Traducción dinámica del texto de los botones y etiquetas.
+- Uso de `ScreenManager` para el cambio fluido entre pantallas.
+
+---
+
+===============================================================================
+9. `login.py` - Inicio de Sesión de Usuario
+===============================================================================
+
+## Propósito
+
+Este archivo gestiona la autenticación de usuarios mediante correo electrónico y contraseña. La verificación se realiza contra la base de datos en Supabase usando una API REST.
+
+## Funcionamiento
+
+1. El usuario introduce su email y contraseña.
+2. Se envían al backend (Supabase) mediante `requests.post`.
+3. Se obtiene el hash almacenado y se compara usando `bcrypt`.
+4. Si es correcto:
+   - Se guarda el usuario en sesión (`App.user_email`).
+   - Se redirige a `menu.py`.
+5. Si falla:
+   - Se muestra mensaje de error traducido.
+
+## Seguridad
+
+- Contraseñas cifradas con `bcrypt`.
+- Uso de HTTPS para envío seguro de datos.
+
+---
+
+===============================================================================
+10. `registro.py` - Registro de Nuevos Usuarios
+===============================================================================
+
+## Propósito
+
+Permite a los nuevos usuarios crear una cuenta con email, contraseña y fecha de nacimiento. Se conecta a Supabase mediante API REST para insertar los datos.
+
+## Funcionamiento
+
+1. Verifica que los campos estén completos.
+2. Verifica que la contraseña tenga al menos 6 caracteres.
+3. Verifica que la contraseña coincida con su confirmación.
+4. Inserta los datos en Supabase:
+   - Email
+   - Contraseña (cifrada con `bcrypt`)
+   - Fecha de nacimiento
+5. Guarda el idioma por defecto del usuario.
+6. Redirige al login tras registro exitoso.
+
+---
+
+===============================================================================
+11. `olvido.py` - Recuperación de Contraseña
+===============================================================================
+
+## Propósito
+
+Permite al usuario recuperar o restablecer su contraseña si la ha olvidado. La validación se basa en su email y fecha de nacimiento.
+
+## Funcionamiento
+
+1. El usuario introduce su email y fecha de nacimiento.
+2. Se verifica si esos datos existen en Supabase.
+3. Si coinciden:
+   - Se permite al usuario establecer una nueva contraseña.
+   - La nueva contraseña se actualiza en Supabase cifrada.
+4. Si no coinciden:
+   - Se muestra un mensaje de error apropiado.
+
+## Seguridad
+
+- La contraseña se actualiza solo si se verifica correctamente la identidad del usuario.
+- Todas las interacciones con Supabase se hacen vía API segura con cabeceras autenticadas.
+
+---

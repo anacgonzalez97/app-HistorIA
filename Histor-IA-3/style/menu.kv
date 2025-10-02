@@ -1,0 +1,145 @@
+#:kivy 1.11.1
+#:import dp kivy.metrics.dp
+
+<MenuButton>:
+    source: ''
+    border_color: 0.2, 0.6, 0.9, 1
+    border_radius: dp(15)
+    border_width: dp(1.5)
+    image_opacity: 1, 1, 1, 1
+    background_normal: ''
+    background_down: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: self.border_color
+        Line:
+            rounded_rectangle: [self.x, self.y, self.width, self.height, self.border_radius]
+            width: self.border_width
+        Color:
+            rgba: self.image_opacity if self.source else [0, 0, 0, 0]
+        RoundedRectangle:
+            source: self.source
+            pos: self.pos
+            size: self.size
+            radius: [self.border_radius]
+    
+    Label:
+        id: text_label
+        text: ''
+        color: 1, 1, 1, 1
+        font_size: dp(16)
+        bold: True
+        size_hint: 1, 1
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+<CustomButton>:
+    source: ''
+    border_color: 0.2, 0.6, 0.9, 1
+    border_radius: dp(15)
+    border_width: dp(1.5)
+    background_normal: ''
+    background_down: ''
+    background_color: 0, 0, 0, 0
+    canvas.before:
+        Color:
+            rgba: self.border_color
+        Line:
+            rounded_rectangle: [self.x, self.y, self.width, self.height, self.border_radius]
+            width: self.border_width
+        Color:
+            rgba: 1, 1, 1, 1
+        RoundedRectangle:
+            source: self.source
+            pos: self.pos
+            size: self.size
+            radius: [self.border_radius]
+
+<MenuRootLayout>:
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            source: root.bg_source
+            pos: root.pos
+            size: root.size
+    
+    CustomButton:
+        id: options_btn_left
+        source: imagen('reportes.png')
+        size_hint: None, None
+        size: dp(45), dp(45)
+        pos_hint: {'right': 0.83, 'top': 0.96}
+        border_color: 0, 0, 0, 0
+        border_radius: dp(100)
+        border_width: dp(1)
+        on_press: root.open_report_form()
+    
+    CustomButton:
+        id: options_btn
+        source: imagen('opciones.png')
+        size_hint: None, None
+        size: dp(45), dp(45)
+        pos_hint: {'right': 0.96, 'top': 0.96}
+        border_color: 0, 0, 0, 0
+        border_radius: dp(100)
+        border_width: dp(1)
+        on_press: root.go_to_options()
+    
+    FloatLayout:
+        id: main_container
+        BoxLayout:
+            id: center_container
+            orientation: 'vertical'
+            size_hint: None, None
+            size: dp(200), dp(400)
+            spacing: dp(20)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            
+            MenuButton:
+                id: btn_busqueda
+                source: imagen('busqueda.png')
+                size_hint: None, None
+                size: dp(180), dp(80)
+                border_color: 0, 0, 0, 0
+                image_opacity: 1, 1, 1, 0.5
+                text_label.text: ''
+                text_label.color: 1, 1, 1, 1
+                text_label.font_size: dp(22)
+                on_press: root.go_to_consulta()
+            
+            MenuButton:
+                id: btn_quiz
+                source: imagen('quiz.png')
+                size_hint: None, None
+                size: dp(180), dp(80)
+                border_color: 0, 0, 0, 0
+                image_opacity: 1, 1, 1, 0.5
+                text_label.text: ''
+                text_label.color: 1, 1, 1, 1
+                text_label.font_size: dp(22)
+                on_press: root.go_to_quiz()
+            
+            MenuButton:
+                id: btn_noticias
+                source: imagen('noticia.png')
+                size_hint: None, None
+                size: dp(180), dp(80)
+                border_color: 0, 0, 0, 0
+                image_opacity: 1, 1, 1, 0.5
+                text_label.text: ''
+                text_label.color: 1, 1, 1, 1
+                text_label.font_size: dp(22)
+                on_press: root.go_to_noticias()
+            
+            MenuButton:
+                id: btn_reto
+                source: imagen('reto.png')
+                size_hint: None, None
+                size: dp(180), dp(80)
+                border_color: 0, 0, 0, 0
+                image_opacity: 1, 1, 1, 0.5
+                text_label.text: ''
+                text_label.color: 1, 1, 1, 1
+                text_label.font_size: dp(22)
+                on_press: root.go_to_reto_diario()

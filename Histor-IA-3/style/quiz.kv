@@ -1,0 +1,155 @@
+#:kivy 2.3.1
+#:import dp kivy.metrics.dp
+
+<ContinentButton>:
+    font_name: 'fonts/Roboto-Bold.ttf'
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10,]
+
+<CountryButton>:
+    font_name: 'fonts/Roboto-Regular.ttf'
+    canvas.before:
+        Color:
+            rgba: self.background_color
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [10,]
+
+<QuizScreen>:
+    canvas.before:
+        Color:
+            rgba: 0.85, 0.90, 0.95, 0.5
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(10)
+        spacing: dp(10)
+
+        Label:
+            id: title_label
+            text: root.get_translation('select_continent')
+            size_hint_y: None
+            height: dp(50)
+            font_size: '20sp'
+            bold: True
+            color: 1, 1, 1, 1
+
+        ScrollView:
+            GridLayout:
+                id: continents_grid
+                cols: 1
+                spacing: dp(10)
+                size_hint_y: None
+                height: self.minimum_height
+                padding: [dp(10), dp(10)]
+
+        Button:
+            id: start_button
+            text: root.get_translation('start_quiz')
+            size_hint_y: None
+            height: dp(50)
+            background_color: 0.85, 0.90, 0.95, 1
+            color: 1, 1, 1, 1
+            bold: True
+            font_size: '16sp'
+            on_press: root.start_quiz()
+
+        BoxLayout:
+            size_hint_y: None
+            height: dp(60)
+            spacing: dp(10)
+
+            Button:
+                id: back_button
+                background_normal: 'imagen/flecha.png'
+                size_hint_x: None
+                width: dp(45)
+                border: 0, 0, 0, 0
+                on_release: root.go_to_menu()
+
+            Button:
+                id: history_button
+                background_normal: 'imagen/historial.png'
+                size_hint_x: None
+                width: dp(45)
+                border: 0, 0, 0, 0
+                on_release: root.show_history()
+
+<QuizQuestionScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+
+        Label:
+            id: question_label
+            text: ''
+            size_hint_y: None
+            height: dp(100)
+            font_size: '16sp'
+            halign: 'center'
+            valign: 'top'
+            text_size: self.width - dp(40), None
+            markup: True
+
+        Label:
+            id: progress_label
+            text: ''
+            size_hint_y: None
+            height: dp(30)
+            font_size: '13sp'
+
+        Label:
+            id: score_label
+            text: ''
+            size_hint_y: None
+            height: dp(30)
+            font_size: '12sp'
+
+        ScrollView:
+            GridLayout:
+                id: options_grid
+                cols: 1
+                spacing: dp(10)
+                size_hint_y: None
+                height: self.minimum_height
+
+<QuizResultsScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        padding: dp(20)
+        spacing: dp(10)
+
+        Label:
+            id: result_label
+            text: ''
+            size_hint_y: None
+            height: dp(100)
+            font_size: '20sp'
+            halign: 'center'
+
+        ScrollView:
+            GridLayout:
+                id: results_grid
+                cols: 1
+                spacing: dp(15)
+                size_hint_y: None
+                height: self.minimum_height
+
+        Button:
+            id: restart_button
+            text: root.get_translation('another_quiz')
+            size_hint_y: None
+            height: dp(50)
+            background_color: 0.85, 0.90, 0.95, 0.5
+            color: 1, 1, 1, 1
+            on_press: root.reset_quiz()
