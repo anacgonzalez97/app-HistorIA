@@ -23,7 +23,7 @@ from openai import OpenAI
 Builder.load_file("style/consulta.kv")
 
 client = OpenAI(
-    api_key="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",
+    api_key="YOUR API KEY",
     base_url="https://openrouter.ai/api/v1"
 )
 
@@ -279,4 +279,5 @@ class ConsultaScreen(Screen):
         self.book_result.text = f"[b][size=18]{t('welcome_text')}[/size][/b]\n\n[size=16]{t('welcome_subtext')}[/size]"
 
         for key, btn in self.category_buttons.items():
+
             btn.label.text = t('categories')[key]
