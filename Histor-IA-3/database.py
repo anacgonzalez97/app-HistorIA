@@ -3,7 +3,7 @@ import requests
 import bcrypt
 from datetime import datetime
 
-SUPABASE_URL = "https://auhwzjqzyzrqjgfkuatb.supabase.co"
+SUPABASE_URL = "https://YOUR SUPABASE URL"
 SUPABASE_KEY = "YOUR SUPABASE KEY"
 
 HEADERS = {
@@ -172,3 +172,4 @@ class SupabaseDB:
 
 
 db = SupabaseDB()
+
