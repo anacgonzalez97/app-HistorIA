@@ -4,7 +4,7 @@ import bcrypt
 from datetime import datetime
 
 SUPABASE_URL = "https://auhwzjqzyzrqjgfkuatb.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF1aHd6anF6eXpycWpnZmt1YXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyNzc2ODIsImV4cCI6MjA1OTg1MzY4Mn0.BrKQYBC4mWXha4zfrNvohOMLAdmZTN0SbT-QnDaEW98"
+SUPABASE_KEY = "YOUR SUPABASE KEY"
 
 HEADERS = {
     "apikey": SUPABASE_KEY,
@@ -168,6 +168,7 @@ class SupabaseDB:
             resultado.append({"usuario": usuario, "streak": streak})
 
         return resultado
+
 
 
 db = SupabaseDB()
